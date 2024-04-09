@@ -1,27 +1,29 @@
+local Stepika = {}
+
 -- To start using Stepika, you'll need to fill out information about your plugin below.
 
-local PluginData = {
+Stepika.PluginData = {
 	Name = "DisableCoreGUIFunctions",
 	PluginDescription = "A legacy plugin to toggle GUIs.",
 	Developer = "ExperiencersInternational",
 	Ver = "v2.2.0",
-	StepikaCore = "v0.1.0",
+	StepikaCore = "v0.1.2",
 	PluginLogo = ""
 }
 
 -- Ignore all the below, this is what makes the module work!
 
-local StudioInfo = {
+Stepika.StudioInfo = {
 	Theme = settings().Studio.Theme.Name,
 }
 
-local function CreateWidget(PluginDirectory, WidgetMinWidth, WidgetMinHeight)
+function Stepika.CreateWidget(PluginDirectory, WidgetMinWidth, WidgetMinHeight)
 
-	local Toolbar = plugin:CreateToolbar(PluginData.Name .. PluginData.Ver)
-	local Launcher = Toolbar:CreateButton("Open widget", "Opens the widget for this plugin.", PluginData.PluginLogo)
+	local Toolbar = plugin:CreateToolbar(Stepika.PluginData.Name .. " plugin")
+	local Launcher = Toolbar:CreateButton("Open widget", "Opens the widget for this plugin.", Stepika.PluginData.PluginLogo)
 	
 	local Widget = plugin:CreateDockWidgetPluginGui(
-		PluginData.Name,
+		Stepika.PluginData.Name,
 		DockWidgetPluginGuiInfo.new(
 			Enum.InitialDockState.Float,
 			false,
@@ -33,8 +35,8 @@ local function CreateWidget(PluginDirectory, WidgetMinWidth, WidgetMinHeight)
 		)
 	)
 	
-	Widget.Title = PluginData.Name
-	Widget.Name = PluginData.Developer .. "." .. PluginData.Name
+	Widget.Title = Stepika.PluginData.Name
+	Widget.Name = Stepika.PluginData.Developer .. "." .. Stepika.PluginData.Name
 	
 	local MaxSize = 12
 	local MinSize = 6
@@ -46,7 +48,7 @@ local function CreateWidget(PluginDirectory, WidgetMinWidth, WidgetMinHeight)
 	local WidgetUI = Instance.new("Frame", Widget)
 	WidgetUI.Name = "UI"
 	
-	if StudioInfo.Theme == "Dark" then
+	if Stepika.StudioInfo.Theme == "Dark" then
 		WidgetUI.BackgroundColor3 = Color3.fromRGB(46, 46, 46)
 	else
 		WidgetUI.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -54,3 +56,5 @@ local function CreateWidget(PluginDirectory, WidgetMinWidth, WidgetMinHeight)
 	
 	return Widget
 end
+
+return Stepika
