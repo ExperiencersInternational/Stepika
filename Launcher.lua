@@ -8,9 +8,10 @@ Then, customise your widget below. Visit documentation to learn how to add stuff
 
 local Stepika = require(script.Parent.Stepika) -- DO NOT REMOVE
 
--- Add any functions to run in your plugin below. By default, the configuration is to create an initial scrolling frame, like auroraSuite. Use functions that begin with Aurora to make sure everything works as expected.
+-- Add any functions to run in your plugin below. By default, the configuration is to create an initial scrolling frame, like auroraSuite, Use functions that begin with Aurora to make sure everything works as expected.
 
 local ScrollingFrame = Stepika.AuroraCreateInitialScroll()
+local CreateSteps = Stepika.AuroraCreateCollapsableMenu("Create Steps", "Steps", "http://www.roblox.com/asset/?id=12749569444", "http://www.roblox.com/asset/?id=12749569444", false, ScrollingFrame)
 
 -- Leave this to run last to ensure Stepika works properly.
 
