@@ -9,7 +9,7 @@ Stepika.PluginData = {
 	Ver = "v2.2.0", -- The current version of your plugin
 	Build = "",
 	PluginLogo = "",
-	StepikaCore = "v0.3.2" -- Don't modify this, version of the Stepika module
+	StepikaCore = "v0.3.5" -- Don't modify this, version of the Stepika module
 }
 
 -- Ignore all the below, this is what makes the module work!
@@ -55,7 +55,7 @@ function Stepika.AuroraCreateInitialScroll()
 	return WidgetScroll
 end
 
-function Stepika.AuroraCreateCollapsableMenu(Name:string, InternalName:string, DarkModeIcon:string, LightModeIcon:string, DefaultState:boolean, Parent:Instance)
+function Stepika.AuroraCreateCollapsibleMenu(Name:string, InternalName:string, DarkModeIcon:string, LightModeIcon:string, DefaultState:boolean, Parent:Instance)
 	local ClosedMenu = Instance.new("Frame", Parent)
 	ClosedMenu.Name = InternalName .. "Closed"
 	ClosedMenu.Size = UDim2.new(1, -16, 0, 24)
@@ -83,10 +83,29 @@ function Stepika.AuroraCreateCollapsableMenu(Name:string, InternalName:string, D
 	CTitle.Text = Name
 	CTitle.FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 	CTitle.Position = UDim2.new(0, 20, 0, 0)
-	CTitle.Size = UDim2.new(1, -20, 0, 16)
+	CTitle.Size = UDim2.new(1, -64, 0, 16)
 	CTitle.BackgroundTransparency = 1
 	CTitle.TextSize = 16
 	CTitle.TextXAlignment = Enum.TextXAlignment.Left
+	
+	local CToggle = Instance.new("TextButton", CTitleFrame)
+	CToggle.BackgroundTransparency = 1
+	CToggle.Size = UDim2.new(0, 40, 0, 16)
+	CToggle.AnchorPoint = Vector2.new(1, 0)
+	CToggle.Position = UDim2.new(1, 0, 0, 0)
+	CToggle.Text = "Show"
+	CToggle.TextColor3 = Color3.fromRGB(0, 170, 255)
+	CToggle.TextXAlignment = Enum.TextXAlignment.Right
+	CToggle.FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.ExtraBold, Enum.FontStyle.Normal)
+	CToggle.TextSize = 16
+	
+	local CScript = Instance.new("Script", CToggle)
+	CScript.Source = [[script.Parent.MouseButton1Click:Connect(function()
+	local Container = script.Parent.Parent.Parent
+	Container.Parent.]] .. InternalName .. [[Open.Visible = true
+	Container.Visible = false
+end)
+	]]
 	
 	if Stepika.StudioInfo.Theme == "Dark" then
 		ClosedMenu.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -97,8 +116,84 @@ function Stepika.AuroraCreateCollapsableMenu(Name:string, InternalName:string, D
 		CLogo.Image = LightModeIcon
 		CTitle.TextColor3 = Color3.fromRGB(0, 0, 0)
 	end
+	
+	-- Open frame
+	
+	local OpenMenu = Instance.new("Frame", Parent)
+	OpenMenu.Name = InternalName .. "Open"
+	OpenMenu.Size = UDim2.new(1, -16, 0, 24)
+	OpenMenu.Position = UDim2.new(0, 0, 0, 8)
+	OpenMenu.AutomaticSize = Enum.AutomaticSize.Y
+
+	local OUICorner = Instance.new("UICorner", OpenMenu)
+	OUICorner.CornerRadius = UDim.new(0, 8)
+
+	local OUIPadding = Instance.new("UIPadding", OpenMenu)
+	OUIPadding.PaddingBottom = UDim.new(0, 4)
+	OUIPadding.PaddingLeft = UDim.new(0, 4)
+	OUIPadding.PaddingRight = UDim.new(0, 4)
+	OUIPadding.PaddingTop = UDim.new(0, 4)
+
+	local OTitleFrame = Instance.new("Frame", OpenMenu)
+	OTitleFrame.Name = "TitleElements"
+	OTitleFrame.BackgroundTransparency = 1
+	OTitleFrame.Size = UDim2.new(1, 0, 0, 16)
+
+	local OLogo = Instance.new("ImageLabel", OTitleFrame)
+	OLogo.BackgroundTransparency = 1
+	OLogo.Size = UDim2.new(0, 16, 0, 16)
+
+	local OTitle = Instance.new("TextLabel", OTitleFrame)
+	OTitle.Text = Name
+	OTitle.FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+	OTitle.Position = UDim2.new(0, 20, 0, 0)
+	OTitle.Size = UDim2.new(1, -64, 0, 16)
+	OTitle.BackgroundTransparency = 1
+	OTitle.TextSize = 16
+	OTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+	local OToggle = Instance.new("TextButton", OTitleFrame)
+	OToggle.BackgroundTransparency = 1
+	OToggle.Size = UDim2.new(0, 40, 0, 16)
+	OToggle.AnchorPoint = Vector2.new(1, 0)
+	OToggle.Position = UDim2.new(1, 0, 0, 0)
+	OToggle.Text = "Hide"
+	OToggle.TextColor3 = Color3.fromRGB(0, 170, 255)
+	OToggle.TextXAlignment = Enum.TextXAlignment.Right
+	OToggle.FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.ExtraBold, Enum.FontStyle.Normal)
+	OToggle.TextSize = 16
+
+	local OScript = Instance.new("Script", OToggle)
+	OScript.Source = [[script.Parent.MouseButton1Click:Connect(function()
+	local Container = script.Parent.Parent.Parent
+	Container.Parent.]] .. InternalName .. [[Closed.Visible = true
+	Container.Visible = false
+end)
+	]]
+	
+	local OContainer = Instance.new("Frame", OpenMenu)
+	OContainer.Name = "Container"
+	OContainer.BackgroundTransparency = 1
+	OContainer.Size = UDim2.new(1, 0, 1, -20)
+	OContainer.Position = UDim2.new(0, 0, 0, 20)
+
+	if Stepika.StudioInfo.Theme == "Dark" then
+		OpenMenu.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+		OLogo.Image = DarkModeIcon
+		OTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+	else
+		OpenMenu.BackgroundColor3 = Color3.fromRGB(225, 225, 225)
+		OLogo.Image = LightModeIcon
+		OTitle.TextColor3 = Color3.fromRGB(0, 0, 0)
+	end
+	
+	if DefaultState == true then
+		ClosedMenu.Visible = false
+	else
+		OpenMenu.Visible = false
+	end
 		
-	return ClosedMenu
+	return ClosedMenu, OpenMenu, OContainer
 end
 
 return Stepika
